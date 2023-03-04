@@ -1,6 +1,6 @@
 {
-  "name": "innoboxrr-js-validators",
-  "version": "1.0.0",
+  "name": "innoboxrr-js-validator",
+  "version": "1.0.1",
   "description": "Validador de JS",
   "main": "index.js",
   "scripts": {
