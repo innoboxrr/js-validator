@@ -1,25 +1,34 @@
 {
   "name": "innoboxrr-js-validator",
-  "version": "1.1.1",
-  "description": "Validador de JS",
+  "version": "2.0.0",
+  "description": "Validacion de formularios a partir de data-validators, para el ecosistema innoboxrr.",
+  "type": "module",
   "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./src/*": "./src/*"
+  },
+  "files": [
+    "index.js",
+    "src"
+  ],
+  "sideEffects": false,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/innoboxrr/jsvalidator.git"
+    "url": "git+https://github.com/innoboxrr/js-validator.git"
   },
-  "keywords": [
-    "js",
-    "validation",
-    "forms",
-    "module"
-  ],
+  "keywords": ["js", "validation", "forms", "innoboxrr"],
   "author": "Homero Raul Vargas Cruz",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/innoboxrr/jsvalidator/issues"
+    "url": "https://github.com/innoboxrr/js-validator/issues"
   },
-  "homepage": "https://github.com/innoboxrr/jsvalidator#readme"
+  "devDependencies": {
+    "jsdom": "^25.0.0",
+    "vitest": "^3.0.0"
+  }
 }
