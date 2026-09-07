@@ -24,6 +24,9 @@
   "keywords": ["js", "validation", "forms", "innoboxrr"],
   "author": "Homero Raul Vargas Cruz",
   "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
   "bugs": {
     "url": "https://github.com/innoboxrr/js-validator/issues"
   },
