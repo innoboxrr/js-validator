@@ -75,6 +75,11 @@ try {
 Cada error se coloca junto a su campo. Lo que no encuentre campo se muestra al
 pie del formulario, en vez de perderse.
 
+Todos los mensajes —los de las reglas, los de `messages`, los de reglas propias
+y los del servidor— se escriben **como texto**, nunca como HTML. Un mensaje de
+Laravel que repita lo que escribió el usuario no puede inyectar marcado en la
+página.
+
 ## API
 
 | | |
