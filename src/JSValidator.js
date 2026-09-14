@@ -24,6 +24,21 @@ const SELECTOR = '[data-validators], .jsValidator'
  */
 const escapeAttribute = (value) => String(value).replace(/(["\\])/g, '\\$1')
 
+/**
+ * Añade un mensaje a su hueco como texto, seguido de un salto de línea.
+ *
+ * Antes era `innerHTML += mensaje + '<br />'`. `appendExternalErrors` recibe el
+ * cuerpo de un 422 de Laravel, y un mensaje que repita lo que escribió el
+ * usuario se pintaba como HTML. Con un nodo de texto el mensaje nunca es
+ * marcado, venga de una regla, de `messages` o del servidor.
+ *
+ * @param {HTMLElement} slot
+ * @param {string} message
+ */
+const appendMessage = (slot, message) => {
+    slot.append(document.createTextNode(`${message}`), document.createElement('br'))
+}
+
 export default class JSValidator {
     /**
      * @param {string|HTMLFormElement} form  el id del formulario o el propio nodo
@@ -171,7 +186,7 @@ export default class JSValidator {
 
         const slot = this.slotFor(control)
 
-        slot.innerHTML += `${message}<br />`
+        appendMessage(slot, message)
         control.setAttribute('aria-invalid', 'true')
     }
 
@@ -214,7 +229,7 @@ export default class JSValidator {
         this.status = false
         this.errors.push({ control: null, message })
 
-        this.formSlot().innerHTML += `${message}<br />`
+        appendMessage(this.formSlot(), message)
     }
 
     formSlot() {
@@ -236,7 +251,7 @@ export default class JSValidator {
         this.errors = this.errors.filter((error) => error.control !== control)
         this.status = this.errors.length === 0
 
-        this.slotFor(control).innerHTML = ''
+        this.slotFor(control).replaceChildren()
         control.removeAttribute('aria-invalid')
     }
 
@@ -245,7 +260,7 @@ export default class JSValidator {
         this.errors = []
 
         this.form.querySelectorAll('.error-msg').forEach((slot) => {
-            slot.innerHTML = ''
+            slot.replaceChildren()
         })
 
         this.controls.forEach((control) => control.removeAttribute('aria-invalid'))

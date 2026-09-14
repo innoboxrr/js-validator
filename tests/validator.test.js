@@ -257,6 +257,65 @@ describe('errores del servidor', () => {
     })
 })
 
+describe('los mensajes se escriben como texto', () => {
+    /**
+     * Los mensajes se insertaban con innerHTML. appendExternalErrors recibe el
+     * cuerpo de un 422 de Laravel, y un mensaje que repita lo que escribio el
+     * usuario se pintaba como HTML: una inyeccion en cualquier formulario.
+     */
+    const payload = '<img src=x onerror=alert(1)>'
+
+    it('un error del servidor no crea elementos', () => {
+        form(input('title', 'required'))
+
+        new JSValidator('f').appendExternalErrors({ title: [payload] })
+
+        const slot = document.querySelector('.error-msg')
+
+        expect(document.querySelector('img')).toBeNull()
+        expect(slot.textContent).toBe(payload)
+    })
+
+    it('un error del servidor sin campo tampoco', () => {
+        form(input('title', 'required'))
+
+        new JSValidator('f').appendExternalErrors({ oculto: [payload] })
+
+        expect(document.querySelector('img')).toBeNull()
+        expect(document.querySelector('.form-error-msg').textContent).toBe(`oculto: ${payload}`)
+    })
+
+    it('el mensaje de una regla propia tampoco', () => {
+        form(input('title', 'maliciosa'))
+
+        new JSValidator('f', { rules: { maliciosa: () => payload } }).validate()
+
+        expect(document.querySelector('img')).toBeNull()
+        expect(document.querySelector('.error-msg').textContent).toBe(payload)
+    })
+
+    it('ni un mensaje cambiado con la opcion messages', () => {
+        form(input('title', 'required'))
+
+        new JSValidator('f', { messages: { required: payload } }).validate()
+
+        expect(document.querySelector('img')).toBeNull()
+        expect(document.querySelector('.error-msg').textContent).toBe(payload)
+    })
+
+    it('varios mensajes siguen separados por un salto de linea', () => {
+        form(input('title', 'required'))
+
+        new JSValidator('f').appendExternalErrors({ title: ['Uno.', payload] })
+
+        const slot = document.querySelector('.error-msg')
+
+        expect(slot.querySelectorAll('br')).toHaveLength(2)
+        expect(slot.childNodes[0].nodeValue).toBe('Uno.')
+        expect(slot.childNodes[2].nodeValue).toBe(payload)
+    })
+})
+
 describe('init', () => {
     it('impide el envio de un formulario invalido', () => {
         const node = form(input('title', 'required'))
