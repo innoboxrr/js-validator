@@ -131,3 +131,7 @@ un solo test.
 ```
 npm test
 ```
+
+## Documentación / Documentation
+
+Documentación completa del ecosistema, en español y en inglés / Full ecosystem documentation, in Spanish and English: <https://innoboxrr.github.io/docs/interfaz/js-validator>
